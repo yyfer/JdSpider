@@ -1,10 +1,15 @@
 let path = require('path')
-let pagesize = 100
+let pagesize = 1000
+let pageno = 1
+let begin = 20070101
+let end = 20180101
 
 module.exports = {
   total: 1000,
   folderContains: pagesize,
   hostname: 'www.zjsfgkw.cn',
+  pageno: pageno,
+  requestSizeLimit: 30,
   searchMode: {
     options: {
       hostname: 'www.zjsfgkw.cn',
@@ -17,11 +22,11 @@ module.exports = {
       }
     },
     conditions: {
-      pageno: 1,
+      pageno: pageno,
       pagesize: pagesize,
       ajlb: '',
-      jarq1: 20070101,
-      jarq2: 20180101
+      jarq1: begin,
+      jarq2: end
     }
   },
   detailMode: {
