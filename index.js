@@ -16,6 +16,7 @@ let start = ''
 let end = ''
 
 let getContent = function () {
+  let pageNum = pageno
   if (index < list.length) {
     let ep = new EventProcy()
     ep.after('next', config.requestSizeLimit, () => {
@@ -25,7 +26,7 @@ let getContent = function () {
     })
     for (let j=0,i=index;(j < config.requestSizeLimit && i < list.length);j++,i++,index++) {
       jdSpider.extractDetail(list[i], map.get(list[i])).then((path) => {
-        jdSpider.extractContent(map.get(list[i]), path).then((v) => {
+        jdSpider.extractContent(pageNum,map.get(list[i]), path).then((v) => {
             ep.emit('next')
         },(e)=>{
           ep.emit('next')
@@ -36,7 +37,7 @@ let getContent = function () {
     }
     if (index >= list.length) {
       end = new Date()
-      console.log('resolve the pageno : ',pageno,' spend the time : ',(end-start)/1000.0,'s')
+      console.log('resolve the pageno : ',pageno,'and spend the time : ',(end-start)/1000.0,'s')
       run(++pageno)
     }
   } else {

@@ -8,13 +8,17 @@ let exportHtml = function (path, filename, html) {
     if (!fs.existsSync(path)) {
       fs.mkdirSync(path)
     }
-    console.log('write to ',path+'\\'+filename)
     let $ = cheerio.load(html)
     let file = path+'\\'+filename
-    fs.writeFileSync(file,'')
+    let content = ''
     _.forEach($('div p'), (p) => {
-      fs.appendFileSync(file, '\r'+$(p).find('span').text())
+      content += '\r\n'
+      _.forEach($(p).find('span'), (span)=>{
+        content += $(span).text()
+      })
     })
+    fs.writeFileSync(file,content)
+    console.log('write to ',file)
   }
 }
 

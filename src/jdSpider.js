@@ -16,7 +16,6 @@ let search = function (pageno) {
     let result = ''
     // set conditions
     searchMode.conditions.pageno = pageno
-    dist.subdir = ((pageno-1)*folderContains+1)+'-'+(pageno*folderContains)
     let postData = querystring.stringify(searchMode.conditions)
     searchMode.options.headers[ 'Content-Length'] = Buffer.byteLength(postData)
     // create http request
@@ -59,15 +58,16 @@ let extractDetail = function (docId, docName) {
   })
 }
 
-let extractContent = function (docName, path) {
+let extractContent = function (pageno, docName, path) {
   return new Promise((resolve, reject) => {
     if (path) {
+      let subpath = ((pageno-1)*folderContains+1)+'-'+(pageno*folderContains)
       http.get('http://'+hostname+path, (res)=>{
         res.setEncoding('utf8');
         let rawData = '';
         res.on('data', (chunk) => rawData += chunk);
         res.on('end', () => {
-          exportHtml(dist.path+'\\'+dist.subdir,docName+'.'+dist.fileType,rawData)
+          exportHtml(dist.path+'\\'+subpath,docName+'.'+dist.fileType,rawData)
           resolve()
         })
       }).on('error', (e) => {
