@@ -5,11 +5,11 @@ let begin = 20070101
 let end = 20180101
 
 module.exports = {
-  total: 1000,
+  total: 2856243,
   folderContains: pagesize,
   hostname: 'www.zjsfgkw.cn',
   pageno: pageno,
-  requestSizeLimit: 30,
+  requestSizeLimit: 100,
   searchMode: {
     options: {
       hostname: 'www.zjsfgkw.cn',
