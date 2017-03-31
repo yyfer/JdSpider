@@ -65,9 +65,6 @@ let extractDetail = function (docId, docName) {
         reject(`extractDetail problem with request: ${e.message},doc : `,docName)
       })
       req.on('timeout', (e) => {
-        if(req.res){
-          req.res('abort');
-        }
         req.abort();
         reject(`extractDetail problem with request: ${e.message},doc : `,docName)
       })
@@ -98,9 +95,6 @@ let extractContent = function (pageno, docName, path) {
       req.on('error', (e) => {
         reject(`extractContent problem with request: ${e.message}, path :`,path)
       }).on('timeout', (e) => {
-        if(req.res){
-          req.res('abort');
-        }
         req.abort();
         reject(`extractContent problem with request: ${e.message}, path :`,path)
       })
