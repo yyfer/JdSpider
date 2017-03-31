@@ -31,9 +31,11 @@ let getContent = function () {
         jdSpider.extractContent(pageNum,map.get(list[i]), path).then((v) => {
             ep.emit('next')
         },(e)=>{
+          console.log(e)
           ep.emit('next')
         })
       }, (e) => {
+        console.log(e)
         ep.emit('next')
       })
     }
@@ -56,7 +58,7 @@ let run = function (pageno) {
   }
   start = new Date()
   // pageno
-  if (pageno * config.folderContains <= config.total){
+  if (pageno * config.pagesize <= config.total){
     jdSpider.search(pageno).then((data)=>{
       list = data.list
       index = 0
@@ -64,12 +66,47 @@ let run = function (pageno) {
       getContent()
     },(e)=>{
       console.log(e)
-      run(++pageno)
+      if (e === 'lengthIsOver') {
+        // 当前查询条件下，已无数据，进行新的条件下的查询
+        console.log('current condition search is over.')
+        newCondition()
+      } else {
+        run(++pageno)
+      }
     })
   } else {
-    console.log('spider is over.')
+    // 当前查询条件下，已无数据，进行新的条件下的查询
+    console.log('current condition search is over.')
+    newCondition()
   }
 }
 
+let newCondition = function () {
+  // 新条件
+  pageno = 1
+  let ajlb_i = config.index.ajlb
+  let cbfy_i = config.index.cbfy
+  cbfy_i++
+  // 还有法院未查找
+  if ( cbfy_i < config.cbfys.length) {
+    config.index.cbfy = cbfy_i
+    console.log('current condition : ',config.ajlbs[config.index.ajlb],config.cbfys[config.index.cbfy])
+    run(pageno)
+  } else {
+    // 该案件类型 已查询完毕
+    ajlb_i++
+    if (ajlb_i < config.ajlbs.length) {
+      config.index.ajlb = ajlb_i
+      config.index.cbfy = 0
+      console.log('current condition : ',config.ajlbs[config.index.ajlb],config.cbfys[config.index.cbfy])
+      run(pageno)
+    } else {
+      // 所有的案件类型 都已查询完毕 结束
+      console.log('spider is over.')
+    }
+  }
+}
+
+console.log('current condition : ',config.ajlbs[config.index.ajlb],config.cbfys[config.index.cbfy])
 run(pageno)
 

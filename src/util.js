@@ -17,8 +17,12 @@ let exportHtml = function (path, filename, html) {
         content += $(span).text()
       })
     })
-    fs.writeFileSync(file,content)
-    console.log('write to ',file)
+    try {
+      fs.writeFileSync(file,content)
+      console.log('write to ',file)
+    } catch(e) {
+      console.log(e)
+    }
   }
 }
 
