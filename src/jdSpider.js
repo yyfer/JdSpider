@@ -23,9 +23,13 @@ let search = function (pageno) {
       res.setEncoding('utf8')
       res.on('data', (chunk) => result += chunk)
       res.on('end', () => {
-        let {list, map} = extractDocID(JSON.parse(result))
-        console.log('searching is over and Docs\' size : ', list.length)
-        resolve({list,map})
+        try {
+          let {list, map} = extractDocID(JSON.parse(result))
+          console.log('searching is over and Docs\' size : ', list.length)
+          resolve({list,map})
+        } catch(e) {
+          reject(e)
+        }
       })
     })
     req.on('error', (e) => {

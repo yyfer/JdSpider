@@ -62,6 +62,7 @@ let run = function (pageno) {
       getContent()
     },(e)=>{
       console.log(e)
+      run(++pageno)
     })
   } else {
     console.log('spider is over.')
