@@ -21,7 +21,9 @@ let getContent = function () {
     let ep = new EventProcy()
     ep.after('next', config.requestSizeLimit, () => {
      if (index < list.length) {
+       console.log('--------------------------------------')
        getContent()
+       console.log('++++++++++++++++++++++++++++++++++++++')
      }
     })
     for (let j=0,i=index;(j < config.requestSizeLimit && i < list.length);j++,i++,index++) {
